@@ -1,0 +1,8 @@
+<| constants.zpr
+<| arithmetic.zpr
+<| logic.zpr
+<| functional.zpr
+<| tuple.zpr
+<| list.zpr
+
+<| assert.zpr

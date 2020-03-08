@@ -1,0 +1,52 @@
+(() + .m)     |> m
+((S .n) + .m) |> (n + (S m))
+
+(() * .m)     |> ()
+((S .n) * .m) |> ((n * m) + m)
+
+(.n ^ ())     |> (S ())
+(.n ^ (S .m)) |> (n * (n ^ m))
+
+(() !)     |> (S ())
+((S .n) !) |> ((S n) * (n !))
+
+(P ())     |> negative
+(P (S .x)) |> x
+
+(P negative)           |> negative
+(negative == negative) |> true
+
+(() - ())         |> ()
+(() - (S .x))     |> negative
+(.n - ())         |> n
+((S .n) - (S .m)) |> (n - m)
+
+(._ | negative) |> false
+(._ | ())       |> true
+(.d | (S .n))   |> (d | ((S n) - d))
+
+
+(() == ())         |> true
+(() == (S ._))     |> false
+((S ._) == ())     |> false
+((S .x) == (S .y)) |> (x == y)
+
+(() <= ())         |> true
+(() <= (S ._))     |> true
+((S ._) <= ())     |> false
+((S .n) <= (S .m)) |> (n <= m)
+
+(() >= ())         |> true
+(() >= (S ._))     |> false
+((S ._) >= ())     |> true
+((S .n) >= (S .m)) |> (n >= m)
+
+(() < ())         |> false
+(() < (S ._))     |> true
+((S ._) < ())     |> false
+((S .n) < (S .m)) |> (n < m)
+
+(() > ())         |> false
+(() > (S ._))     |> false
+((S ._) > ())     |> true
+((S .n) > (S .m)) |> (n > m)

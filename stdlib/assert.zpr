@@ -1,0 +1,2 @@
+(assert true)  |> assertion-succeeded
+(assert false) |> assertion-failed

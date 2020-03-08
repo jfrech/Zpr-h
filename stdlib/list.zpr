@@ -1,0 +1,86 @@
+<| arithmetic.zpr
+<| logic.zpr
+<| functional.zpr
+<| tuple.zpr
+
+~example-list |> (' a (' b (' c ())))
+
+snoc |> (flip ')
+
+(empty? ())         |> true
+(empty? (' .x .xs)) |> false
+
+(singleton .x) |> (' x ())
+
+(() ++ .ys)         |> ys
+((' .x .xs) ++ .ys) |> (' x (xs ++ ys))
+
+(map .f ())         |> ()
+(map .f (' .x .xs)) |> (' (f x) (map f xs))
+<$> |> (->op map)
+
+(foldr .f .r ())         |> r
+(foldr .f .r (' .x .xs)) |> (f x (foldr f r xs))
+
+(foldl .f .l ())         |> l
+(foldl .f .l (' .x .xs)) |> (foldl f (f l x) xs)
+
+(() == ())                 |> true
+(() == (' ._ .__))         |> false
+((' ._ .__) == ())         |> false
+((' .x .xs) == (' .y .ys)) |> ((x == y) && (xs == ys))
+
+and |> (partial:3->1 foldr (op-> &&) true)
+or  |> (partial:3->1 foldr (op-> ||) false)
+
+(any .p .xs) |> (or (map p xs))
+(all .p .xs) |> (and (map p xs))
+
+reverse |> (partial:3->1 foldl snoc ())
+
+(head ())        |> nothing
+(head (' .x ._)) |> x
+
+(tail ())         |> nothing
+(tail (' ._ .xs)) |> xs
+
+(nothing == nothing) |> true
+
+(take () ._)             |> ()
+(take ._ ())             |> ()
+(take (S .n) (' .x .xs)) |> (' x (take n xs))
+
+(drop () .xs)            |> xs
+(drop ._ ())             |> ()
+(drop (S .n) (' ._ .xs)) |> (drop n xs)
+
+; the right side may be infinite
+(zip () ._)                 |> ()
+(zip ._ ())                 |> ()
+(zip (' .x .xs) (' .y .ys)) |> (' (x , y) (zip xs ys))
+
+; both sides may be infinite
+(lazy-zip () ._)                 |> ()
+(lazy-zip ._ ())                 |> ()
+(lazy-zip (' .x .xs) (' .y .ys)) |> (' (x , y) (lazy-zip ys xs))
+(lazy-zip (' .x .xs) .ys)        |> (map swap (lazy-zip ys (' x xs)))
+
+(lazy-zip-with .f .xs .ys) |> (map (->$, f) (lazy-zip xs ys))
+
+(onlyIf false ._) |> ()
+(onlyIf true .x)  |> (' x ())
+
+(filter .p ())         |> ()
+(filter .p (' .x .xs)) |> ((onlyIf (p x) x) ++ (filter p xs))
+
+|N0 |> (' 0 (map S |N0))
+|N |> (tail |N0)
+
+(range () .m)         |> (take m |N0)
+(range ._ ())         |> ()
+(range (S .n) (S .m)) |> (map S (range n m))
+; alternatively: (range .n .m) |> (take (m - n) (map (section n + @) |N0))
+
+sum |> (partial:3->1 foldr (op-> +) 0)
+
+length |> (sum ° (partial:2->1 map (const 1)))

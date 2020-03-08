@@ -1,0 +1,47 @@
+<| prelude.zpr
+<| number-theory.zpr
+
+test-arithmetic0 |> ((((((100 - 45) * 2) - 90) == 20) && (3 < 8)) && ((1 < infinity) || (1 > infinity)))
+test-arithmetic1 |> ((((3 ^ 2) == 9) && (8 == (2 ^ 3))) && ((5 !) == (30 + 90)))
+test-arithmetic2 |> ((not ((S 4) == (P 4))) && ((negative == ((iterate P 5) 3)) && (not ((P 8) == (S 8)))))
+test-arithmetic3 |> (((not (4 <= 3)) || false) && ((5 < infinity) && (((3 <= 3) && ((2 < 1) || (1 < 2))) && (4 >= 3))))
+test-arithmetic4 |> ((4 > 2) && (((not (3 < 3)) && (((0 <= 1) && ((8 <= 12) && (not (8 >= 9)))) && (4 >= 4))) && (not (3 > 3))))
+test-arithmetic5 |> (not (((0 + 1) + 2) > (snd (0 , infinity))))
+test-arithmetic  |> (test-arithmetic5 && (test-arithmetic4 && (((test-arithmetic0 && test-arithmetic1) && test-arithmetic2) && test-arithmetic3)))
+
+test-logic |> ((not (anything && false)) && (((true || false) && ((((not (false && false)) && (true && (false || (true || false)))) && true) || false)) && (false || true)))
+
+test-functional0 |> ((((section @ ^ 3) 2) == 8) && (((section 3 ^ @) 2) == 9))
+test-functional1 |> (((partial:3->2 foldr (op-> +)) 1 (range 3 8)) == 26)
+test-functional2 |> ((not ((singleton anything) == ())) && (not (() == (singleton singleton))))
+test-functional  |> (and (' test-functional0 (' test-functional1 (' test-functional2 ()))))
+
+(~test-list (' c (' b (' a ())))) |> true
+test-list0 |> ((~test-list (fst <$> (reverse (zip ~example-list |N0)))) && (~test-list (reverse (take 8 ~example-list))))
+test-list1 |> (((length ~example-list) == 3) && ((length (take 4 (lazy-zip |N0 |N))) == 4))
+test-list2 |> (((head (range 3 6)) == 3) && ((head (tail (range 6 8))) == 7))
+test-list3 |> ((((nothing == (head ())) && ((tail ()) == nothing)) && (not (empty? ~example-list))) && (empty? (drop 4 ~example-list)))
+test-list4 |> ((() == (range 1 0)) && ((range 8 3) == ()))
+test-list5 |> (((length (zip (range 0 8) (range 0 4))) == 4) && (8 == (length (zip (range 0 16) (range 1 9)))))
+test-list6 |> ((((lazy-zip |N0 ()) == ()) && (((lazy-zip (range 0 4) |N) == (swap <$> (lazy-zip |N (range 0 4)))) && ((lazy-zip (range 0 9) |N) == (swap <$> (lazy-zip |N (range 0 9)))))) && (() == (lazy-zip () |N0)))
+test-list  |> (all id (' test-list0 (' test-list1 (' test-list2 (' test-list3 (' test-list4 (' test-list5 (' test-list6 ()))))))))
+
+test-number-theory0 |> ((' 1 (' 2 (' 2 (' 3 (' 2 (' 4 ())))))) == (take 6 A000005))
+test-number-theory1 |> ((' 2 (' 3 (' 5 (' 7 (' 11 ()))))) == (take 5 A000040))
+test-number-theory2 |> ((take 7 A006218) == (' 0 (' 1 (' 3 (' 5 (' 8 (' 10 (' 14 ()))))))))
+test-number-theory3 |> (((take 3 A000027) == (' 1 (' 2 (' 3 ())))) && ((tail (take 13 A001477)) == (take 12 A000027)))
+test-number-theory  |> (test-number-theory3 && (test-number-theory2 && (not ((not test-number-theory0) || (not test-number-theory1)))))
+
+(extend-fibonacci (' .y (' .x .zs))) |> (' (x + y) (' y (' x zs)))
+(fibonacci-sequence .n) |> (reverse ((iterate extend-fibonacci n) (' 1 (' 0 ()))))
+test-fibonacci0 |> ((fibonacci-sequence 5) == (' 0 (' 1 (' 1 (' 2 (' 3 (' 5 (' 8 ()))))))))
+fibs |> ((' 0 (' 1 ())) ++ (lazy-zip-with (op-> +) fibs (tail fibs)))
+test-fibonacci1 |> ((' 0 (' 1 (' 1 (' 2 (' 3 (' 5 (' 8 (' 13 (' 21 (' 34 (' 55 (' 89 0)))))))))))) == (take 12 fibs))
+test-fibonacci  |> (test-fibonacci0 && test-fibonacci1)
+test-prime |> ((take 5 primes) == (' 2 (' 3 (' 5 (' 7 (' 11 ()))))))
+test-other |> (test-fibonacci && test-prime)
+
+(~test-assert assertion-succeeded assertion-failed) |> true
+test-assert |> (~test-assert (assert true) (assert false))
+
+main |> (assert (and (' test-assert (' test-arithmetic (' test-logic (' test-functional (' test-list (' test-number-theory (' test-other ())))))))))

@@ -1,0 +1,3 @@
+(! false)   |> true
+(prime? 55) |> false
+main        |> (! (prime? 55))

@@ -1,0 +1,12 @@
+(true && .b)  |> b
+(.b && true)  |> b
+(false && ._) |> false
+(._ && false) |> false
+
+(true || ._)  |> true
+(._ || true)  |> true
+(false || .b) |> b
+(.b || false) |> b
+
+(not true)  |> false
+(not false) |> true

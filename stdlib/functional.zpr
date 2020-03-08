@@ -1,0 +1,19 @@
+((section @ .op .y) .x) |> (x op y)
+((section .x .op @) .y) |> (x op y)
+
+((partial:3->1 .f .x .y) .z) |> (f x y z)
+((partial:3->2 .f .x) .y .z) |> (f x y z)
+((partial:2->1 .f .x) .y) |> (f x y)
+; TODO ...
+
+((.f ° .g) .x) |> (f (g x))
+((flip .f) .x .y) |> (f y x)
+
+(.x (->op .f) .y) |> (f x y)
+((op-> .op) .x .y) |> (x op y)
+
+(id .x) |> x
+((const .x) ._) |> x
+
+(iterate .f ())     |> id
+(iterate .f (S .n)) |> (f ° (iterate f n))

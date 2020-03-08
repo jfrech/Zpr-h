@@ -1,0 +1,3 @@
+<| ../number-theory.zpr
+
+main |> (take 16 primes)

@@ -1,0 +1,13 @@
+<| prelude.zpr
+
+(tau .n) |> (length (filter (section @ | n) (range 1 (S n))))
+(prime? .p) |> (not (any (section @ | p) (range 2 p)))
+
+primes |> (filter prime? (drop 2 |N0))
+
+A000005 |> (tau <$> |N)
+A000027 |> |N
+A000040 |> primes
+A001477 |> |N0
+A006218 |> ((((sum ° (section tau <$> @)) ° (partial:2->1 range 1)) ° S) \
+            <$> |N0)

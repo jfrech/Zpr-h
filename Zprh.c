@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
         if (pargs.stats) { \
             WATCH(stats.n_iterations, "Statistics: "); \
             _WATCH("elapsed time: %.4f sec // ", stats.seconds_elapsed); \
-            _WATCH("program_text_memory_peak = " PRI_BYTE_PERCENTAGE "// " \
+            _WATCH("program_text_memory_peak = " PRI_BYTE_PERCENTAGE " // " \
                  , BYTE_PERCENTAGE(stats.program_text_memory_peak \
                  , PROGRAM_TEXT_MEMORY)); \
             _WATCH("program_text_memory_used = " PRI_BYTE_PERCENTAGE "" \
